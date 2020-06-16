@@ -12,8 +12,9 @@ func main() {
 	health := engine.Group("/")
 
 	userRoute := engine.Group("/user")
-	userRoute.GET("/", src.GetUsers)
-	userRoute.PUT("/:id", src.GetUser) // /user
+	userRoute.GET("/", src.GetUsers) // /user
+	userRoute.GET("/:id", src.GetUser)
+	userRoute.PUT("/:id", src.PutUser)
 	userRoute.POST("/", src.PostUser)
 	userRoute.DELETE("/:id", src.DeleteUser)
 

@@ -11,9 +11,19 @@ func PostDebt(c *gin.Context) {
 		return
 	}
 
+	user, _ := selectUserID(newDebt.UserRefer, c) // pegar o usuario e enviar o id, userrefer esta retornando 0
+	if user.ID == 0 {
+		c.JSON(400, gin.H{"error": newDebt})
+		return
+	}
+	// user.Debts = append(user.Debts, newDebt)
+	// db2.Save(&user)
+
 	db := dbConnect()
+
 	db.Create(&newDebt)
 	c.JSON(201, newDebt)
+
 }
 
 func GetDebt(c *gin.Context) {
@@ -39,8 +49,17 @@ func PutDebt(c *gin.Context) {
 	}
 
 	debt, db := selecDebtId(ID, c)
+	//
+	user, _ := selectUserID(debt.UserRefer, c) // pegar o usuario e enviar o id
+	if user.ID == 0 {
+		c.JSON(400, gin.H{"error": "No user found"})
+		return
+	}
+	//user.Debts = append(user.Debts, debt)
 
-	debt.User_Id = debtUpdate.User_Id
+	//db2.Save(&user)
+	//
+	debt.UserRefer = debtUpdate.UserRefer
 	debt.Company_name = debtUpdate.Company_name
 	debt.Value = debtUpdate.Value
 	debt.Date = debtUpdate.Date
